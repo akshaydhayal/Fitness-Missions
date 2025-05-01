@@ -1,7 +1,6 @@
-// models/Mission.js
-import mongoose from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
-const MissionSchema = new mongoose.Schema({
+const MissionSchema = new Schema({
   type: { type: String, enum: ["Walking", "Sleep"], required: true },
   title: { type: String, required: true },
   description: { type: String },
@@ -19,4 +18,4 @@ const MissionSchema = new mongoose.Schema({
   winner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
-export default mongoose.models.MissionModel || mongoose.model("MissionModel", MissionSchema);
+export default models.MissionModel || model("MissionModel", MissionSchema);

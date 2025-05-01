@@ -1,11 +1,10 @@
-// models/User.js
-import mongoose from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
   walletAddress: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   points: { type: Number, default: 0 },
   missionsJoined: [{ type: mongoose.Schema.Types.ObjectId, ref: "Mission" }],
 });
 
-export default mongoose.models.UserModel || mongoose.model("UserModel", UserSchema);
+export default models.UserModel || model("UserModel", UserSchema);
