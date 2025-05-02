@@ -1,4 +1,5 @@
 // app/layout.tsx
+import WalletConnectProvider from "@/components/WalletProvider";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
@@ -12,7 +13,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         {/* <Navbar /> */}
-        <main className="p-4">{children}</main>
+        <WalletConnectProvider>
+          <main className="p-4">{children}</main>
+        </WalletConnectProvider>
       </body>
     </html>
   );
