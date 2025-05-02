@@ -3,14 +3,15 @@ import connectMongo from "@/lib/dbConnect";
 import Mission from "@/models/missionModel";
 
 export async function POST(request: Request) {
-  const { title, type, description, deadline, pointsPerStep, pointsPerHour } = await request.json();
-
+  const { title, type, description, deadline, pointsPerStep,image, pointsPerHour } = await request.json();
+  console.log(title,"inside the post missions");
   await connectMongo();
 
   const newMission = new Mission({
     title,
     type,
     description,
+    image,
     deadline,
     pointsPerStep,
     pointsPerHour,
@@ -21,7 +22,8 @@ export async function POST(request: Request) {
     const mission = await newMission.save();
     return NextResponse.json({ mission });
   } catch (error) {
-    return NextResponse.json({ error: "Mission creation failed" });
+    console.log(error);
+    return NextResponse.json({ error: "Mission creation failed",err:error });
   }
 }
 
