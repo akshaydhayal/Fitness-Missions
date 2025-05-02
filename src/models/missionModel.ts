@@ -1,6 +1,6 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose from "mongoose";
 
-const MissionSchema = new Schema({
+const MissionSchema = new mongoose.Schema({
   type: { type: String, enum: ["Walking", "Sleep"], required: true },
   title: { type: String, required: true },
   description: { type: String },
@@ -8,14 +8,40 @@ const MissionSchema = new Schema({
   deadline: { type: Date, required: true },
   pointsPerStep: { type: Number }, // For walking mission
   pointsPerHour: { type: Number }, // For sleep mission
-  creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  creator: { type: mongoose.Schema.Types.ObjectId, ref: "UserModel" },
   participants: [
     {
-      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "UserModel" },
       records: [{ date: Date, steps: Number, hoursSlept: Number, points: Number }],
     },
   ],
-  winner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  winner: { type: mongoose.Schema.Types.ObjectId, ref: "UserModel" },
 });
 
-export default models.MissionModel || model("MissionModel", MissionSchema);
+const MissionModel = mongoose.models.MissionModel || mongoose.model("MissionModel", MissionSchema);
+
+export default MissionModel;
+
+
+// import mongoose, { Schema, model, models } from "mongoose";
+// import User from "./userModel";
+
+// const MissionSchema = new Schema({
+//   type: { type: String, enum: ["Walking", "Sleep"], required: true },
+//   title: { type: String, required: true },
+//   description: { type: String },
+//   image: { type: String },
+//   deadline: { type: Date, required: true },
+//   pointsPerStep: { type: Number }, // For walking mission
+//   pointsPerHour: { type: Number }, // For sleep mission
+//   creator: { type: mongoose.Schema.Types.ObjectId, ref: "UserModel" },
+//   participants: [
+//     {
+//       user: { type: mongoose.Schema.Types.ObjectId, ref: "UserModel" },
+//       records: [{ date: Date, steps: Number, hoursSlept: Number, points: Number }],
+//     },
+//   ],
+//   winner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+// });
+
+// export default models.MissionModel || model("MissionModel", MissionSchema);

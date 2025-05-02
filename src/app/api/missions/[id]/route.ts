@@ -1,16 +1,24 @@
 import { NextResponse } from "next/server";
 import connectMongo from "@/lib/dbConnect";
 import Mission from "@/models/missionModel";
+import User from "@/models/userModel"; // Import the User model
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
-  await connectMongo();
-  const mission = await Mission.findById(params.id).populate("participants.user");
+  try {
+    await connectMongo(); // Ensure the DB connection is established
 
-  if (!mission) {
-    return NextResponse.json({ error: "Mission not found" });
+    // Find the mission by its ID and populate the participants.user field
+    const mission = await Mission.findById(params.id).populate("participants.user");
+
+    if (!mission) {
+      return NextResponse.json({ error: "Mission not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ mission });
+  } catch (err) {
+    console.error("error in get mission : ", err);
+    return NextResponse.json({ error: "Server error", details: err.message }, { status: 500 });
   }
-
-  return NextResponse.json({ mission });
 }
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
