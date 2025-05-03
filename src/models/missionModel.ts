@@ -12,7 +12,8 @@ const MissionSchema = new mongoose.Schema({
   participants: [
     {
       user: { type: mongoose.Schema.Types.ObjectId, ref: "UserModel" },
-      records: [{ date: Date, steps: Number, hoursSlept: Number, points: Number }],
+      records: { date: Date, steps: Number, hoursSlept: Number, points: Number },
+    //   records: [{ date: Date, steps: Number, hoursSlept: Number, points: Number }],
     },
   ],
   winner: { type: mongoose.Schema.Types.ObjectId, ref: "UserModel" },

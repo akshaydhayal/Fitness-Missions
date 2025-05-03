@@ -10,7 +10,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     // Find the mission by its ID and populate the participants.user field
     // const mission = await Mission.findById(params.id).populate("participants.user");
     // const mission = await Mission.findById(params.id);
-    
+
      const mission = await Mission.findById(params.id).populate({
        path: "participants.user",
        model: User,
@@ -27,6 +27,8 @@ export async function GET(request: Request, { params }: { params: { id: string }
     return NextResponse.json({ error: "Server error", details: err.message }, { status: 500 });
   }
 }
+
+
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
   const { userId, steps, hoursSlept } = await request.json();
@@ -47,7 +49,8 @@ export async function POST(request: Request, { params }: { params: { id: string 
 
   mission.participants.push({
     user: userId,
-    records: [{ date: new Date(), steps, hoursSlept, points }],
+    // records: { date: new Date(), steps, hoursSlept, points },
+    records: { date: new Date("1900-01-01T00:00:00Z"), steps, hoursSlept, points },
   });
 
   await mission.save();
@@ -86,9 +89,13 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 
     // Add user as a participant in the mission without any points initially
+    // mission.participants.push({
+    //   user: user._id,
+    //   records: [{ date: new Date(), steps: 0, hoursSlept: 0, points: 0 }],
+    // });
     mission.participants.push({
       user: user._id,
-      records: [{ date: new Date(), steps: 0, hoursSlept: 0, points: 0 }],
+      records: { date: new Date("1900-01-01T00:00:00Z"), steps: 0, hoursSlept: 0, points: 0 },
     });
 
     // Save the updated mission
