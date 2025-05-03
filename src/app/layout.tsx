@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import MissionModal from "@/components/MissionModal";
 import { useState } from "react";
+import { RecoilRoot } from "recoil";
 
 // export const metadata = {
 //   title: "Fitness Missions",
@@ -20,9 +21,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {/* <Navbar /> */}
         <WalletConnectProvider>
-          <Navbar onCreateMissionClick={() => setIsModalOpen(true)} />
-          <MissionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-          <main className="p-4">{children}</main>
+          <RecoilRoot>
+            <Navbar onCreateMissionClick={() => setIsModalOpen(true)} />
+            <MissionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            <main className="p-4">{children}</main>
+          </RecoilRoot>
         </WalletConnectProvider>
       </body>
     </html>

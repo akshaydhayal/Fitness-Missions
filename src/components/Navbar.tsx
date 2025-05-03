@@ -6,6 +6,8 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import NameModal from "./NameModal"; // Import the NameModal component
+import { useSetRecoilState } from "recoil";
+import { userState } from "@/store/userState";
 
 const colors = {
   background: "#121212",
@@ -23,6 +25,7 @@ export default function Navbar({ onCreateMissionClick }: NavbarProps) {
   const [errorMessage, setErrorMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
+  const setUser=useSetRecoilState(userState);
 
   async function checkUserExists(walletAddress: string) {
     const response = await fetch("/api/users/login", {
@@ -33,6 +36,9 @@ export default function Navbar({ onCreateMissionClick }: NavbarProps) {
       body: JSON.stringify({ walletAddress }),
     });
     const jsonResponse = await response.json();
+    if (jsonResponse.user) {
+        setUser(jsonResponse.user);
+    }
     console.log("response: ", jsonResponse);
 
     if (!response.ok) {
