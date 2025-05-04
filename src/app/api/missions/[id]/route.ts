@@ -40,17 +40,19 @@ export async function POST(request: Request, { params }: { params: { id: string 
     return NextResponse.json({ error: "Mission not found" });
   }
 
-  const points =
-    mission.type === "Walking"
-      ? (steps / 1000) * mission.pointsPerStep
-      : hoursSlept === 8
-      ? mission.pointsPerHour
-      : (Math.abs(8 - hoursSlept) * mission.pointsPerHour) / 2;
+//   const points =
+//     mission.type === "Walking"
+//       ? (steps / 1000) * mission.pointsPerStep
+//       : hoursSlept === 8
+//       ? mission.pointsPerHour
+//       : (Math.abs(8 - hoursSlept) * mission.pointsPerHour) / 2;
+
 
   mission.participants.push({
     user: userId,
     // records: { date: new Date(), steps, hoursSlept, points },
-    records: { date: new Date("1900-01-01T00:00:00Z"), steps, hoursSlept, points },
+    // records: { date: new Date("1900-01-01T00:00:00Z"), steps, hoursSlept, points },
+    records: { date: new Date("1900-01-01T00:00:00Z"), points:0 },
   });
 
   await mission.save();
@@ -95,7 +97,10 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     // });
     mission.participants.push({
       user: user._id,
-      records: { date: new Date("1900-01-01T00:00:00Z"), steps: 0, hoursSlept: 0, points: 0 },
+      
+    //   records: { date: new Date("1900-01-01T00:00:00Z"), steps: 0, hoursSlept: 0, points: 0 },
+
+      records: { date: new Date("1900-01-01T00:00:00Z"), points: 0 },
     });
 
     // Save the updated mission

@@ -1,13 +1,14 @@
 // components/Navbar.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import NameModal from "./NameModal"; // Import the NameModal component
 import { useSetRecoilState } from "recoil";
 import { userState } from "@/store/userState";
+import Link from "next/link";
 
 const colors = {
   background: "#121212",
@@ -65,16 +66,21 @@ export default function Navbar({ onCreateMissionClick }: NavbarProps) {
   };
 
   // Automatically check if user exists when publicKey changes
-  if (publicKey && !walletAddress) {
-    const address = publicKey.toString();
-    setWalletAddress(address);
-    checkUserExists(address);
-  }
+  useEffect(()=>{
+      if (publicKey && !walletAddress) {
+        const address = publicKey.toString();
+        setWalletAddress(address);
+        checkUserExists(address);
+      }
+  },[publicKey])
 
   return (
-    <nav style={{ backgroundColor: colors.background }} className="p-4 flex justify-between items-center">
-      <h1 style={{ color: colors.text }} className="text-2xl font-bold">
-        Fitness Missions
+    <nav style={{ backgroundColor: colors.background }} className="pt-1 px-4 flex justify-between items-center">
+      <h1 className="text-4xl font-extrabold text-center my-0 cursor-pointer">
+        {/* <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 animate-pulse">Cudis Missions</span> */}
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-red-600 animate-pulse">
+          <Link href="/">Cudis Missions</Link>
+        </span>
       </h1>
       <div className="flex items-center">
         <button

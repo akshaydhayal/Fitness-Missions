@@ -72,8 +72,8 @@ console.log("participant: ",participant);
 //   });
   participant.records={
     date: new Date(),
-    steps:Number(participant.records.steps) + Number(steps),
-    hoursSlept:Number(participant.records.hoursSlept)+Number(hoursSlept),
+    // steps:Number(participant.records.steps) + Number(steps),
+    // hoursSlept:Number(participant.records.hoursSlept)+Number(hoursSlept),
     points:Number(participant.records.points) + Number(points),
   };
 
