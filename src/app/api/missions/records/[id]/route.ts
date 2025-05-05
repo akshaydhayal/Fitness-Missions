@@ -9,7 +9,6 @@ export async function POST(request: Request, { params }: { params: { id: string 
   await connectMongo();
 
   // Find the mission
-  //   const mission = await Mission.findById(params.id);
   const mission = await Mission.findById(params.id).populate({
     path: "participants.user",
     model: User,
@@ -35,10 +34,6 @@ export async function POST(request: Request, { params }: { params: { id: string 
     return NextResponse.json({ error: "User not a participant of the mission" }, { status: 400 });
   }
 
-  //   const existingRecord = participant.records.find((record) => {
-  //     const recordDate = record.date.toISOString().split("T")[0];
-  //     return recordDate === today;
-  //   });
   console.log("participant: ", participant);
   const existingRecord = new Date(`${participant.records.date}`).toISOString().split("T")[0] === today;
   console.log("existing record", existingRecord);
@@ -67,20 +62,11 @@ export async function POST(request: Request, { params }: { params: { id: string 
     "points: ",
     points
   );
-  // Add new record for today
-  //   participant.records.push({
-  //     date: new Date(),
-  //     steps,
-  //     hoursSlept,
-  //     points,
-  //   });
+  
   participant.records = {
     date: new Date(),
-    // steps:Number(participant.records.steps) + Number(steps),
-    // hoursSlept:Number(participant.records.hoursSlept)+Number(hoursSlept),
     points: Number(participant.records.points) + Number(points),
   };
-
   await mission.save();
 
   return NextResponse.json({ success: true, mission });

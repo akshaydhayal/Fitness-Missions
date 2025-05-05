@@ -37,6 +37,7 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
   const userInfo = useRecoilValue(userState);
 
   const [timeLeft, setTimeLeft] = useState("");
+  console.log("mission : ",mission);
 
   // Fetch mission details
   useEffect(() => {
@@ -174,7 +175,7 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
           userId: userInfo._id, steps: mission?.type === "Walking" ? dailySteps : undefined, hoursSlept: mission?.type === "Sleep" ? dailySleep : undefined,
         }),
       });
-
+      
       const result = await response.json();
 
       if (response.ok) {
@@ -192,7 +193,7 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
       setIsSubmitting(false);
     }
   };
-
+  
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-900 text-gray-200 flex items-center justify-center">
@@ -234,7 +235,7 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-300 mb-4">{mission.description}</p>
-                <div className="grid grid-cols-2 gap-4 text-gray-300">
+                <div className="grid grid-cols-2 gap-4 text-gray-300 ">
                   <div>
                     <span className="font-semibold">Type:</span> {mission.type}
                   </div>
@@ -251,6 +252,11 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
                       <span className="font-semibold">Points p/h Sleep(upto 8 hours),then -10% p/h :</span> {mission.pointsPerHour}
                     </div>
                   )}
+                  {/* <div className="col-span-2"> */}
+                  <div className="">
+                  {/* @ts-expect-error types */}
+                    <span className="font-semibold">Mission created by:</span> {mission.creator?.name || "Unknown"}
+                  </div>
                 </div>
                 {connected ? (
                   <Button
@@ -346,12 +352,12 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
                   <ul className="space-y-4">
                     {/* @ts-expect-error types ignore */}
                     {mission.participants.sort((a, b) => b.records.points - a.records.points).map((participant, idx) => (
-                      <li key={participant?._id} className="flex items-center text-gray-300">
+                        <li key={participant?._id} className="flex items-center text-gray-300">
                           <span className="mr-2 font-bold">{idx + 1}.</span>
                           <div className="flex-grow">
                             <p className="font-semibold">{participant?.user?.name}</p>
-                            
-                          {/* @ts-expect-error types ignore */}
+
+                            {/* @ts-expect-error types ignore */}
                             <CustomProgress value={participant?.records.points} max={Math.max(...mission.participants.map((p) => p.records.points))} />
                           </div>
                           <span className="ml-2 font-semibold">{participant?.records.points}</span>

@@ -11,11 +11,22 @@ export async function GET(request: Request, { params }: { params: { id: string }
     // const mission = await Mission.findById(params.id).populate("participants.user");
     // const mission = await Mission.findById(params.id);
 
-     const mission = await Mission.findById(params.id).populate({
-       path: "participants.user",
-       model: User,
-       select: "name walletAddress points", // Select the fields you want to include
-     });
+    //  const mission = await Mission.findById(params.id).populate({
+    //    path: "participants.user",
+    //    model: User,
+    //    select: "name walletAddress points", // Select the fields you want to include
+    //  });
+    const mission = await Mission.findById(params.id)
+      .populate({
+        path: "participants.user",
+        model: User,
+        select: "name walletAddress points",
+      })
+      .populate({
+        path: "creator",
+        model: User,
+        select: "name walletAddress points",
+      });
 
     if (!mission) {
       return NextResponse.json({ error: "Mission not found" }, { status: 404 });
@@ -32,7 +43,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
   const { userId } = await request.json();
-
   await connectMongo();
 
   const mission = await Mission.findById(params.id);
@@ -46,29 +56,20 @@ export async function POST(request: Request, { params }: { params: { id: string 
 //       : hoursSlept === 8
 //       ? mission.pointsPerHour
 //       : (Math.abs(8 - hoursSlept) * mission.pointsPerHour) / 2;
-
-
   mission.participants.push({
     user: userId,
-    // records: { date: new Date(), steps, hoursSlept, points },
     // records: { date: new Date("1900-01-01T00:00:00Z"), steps, hoursSlept, points },
     records: { date: new Date("1900-01-01T00:00:00Z"), points:0 },
   });
-
   await mission.save();
 
   return NextResponse.json({ mission });
 }
 
-
-
 // export async function POST(request: Request, { params }: { params: { id: string } }) {
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   try {
-    // Parse request data (userId)
     const { walletAddress } = await request.json();
-
-    // Connect to MongoDB
     await connectMongo();
 
     // Find the mission by its ID
@@ -78,7 +79,6 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 
     // Find the user by their ID
-    // const user = await User.findById(userId);
     const user = await User.findOne({walletAddress:walletAddress});
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -90,21 +90,11 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     if (isUserAlreadyParticipant) {
       return NextResponse.json({ error: "User already joined the mission" }, { status: 400 });
     }
-
-    // Add user as a participant in the mission without any points initially
-    // mission.participants.push({
-    //   user: user._id,
-    //   records: [{ date: new Date(), steps: 0, hoursSlept: 0, points: 0 }],
-    // });
     mission.participants.push({
       user: user._id,
-      
     //   records: { date: new Date("1900-01-01T00:00:00Z"), steps: 0, hoursSlept: 0, points: 0 },
-
       records: { date: new Date("1900-01-01T00:00:00Z"), points: 0 },
     });
-
-    // Save the updated mission
     await mission.save();
 
     // Update user's missionsJoined (no points added at this stage)

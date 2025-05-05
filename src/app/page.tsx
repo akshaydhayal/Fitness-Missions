@@ -75,6 +75,8 @@ const HomePage = () => {
       <CardContent className="p-4">
         <CardTitle className="text-xl font-bold mb-2 text-gray-100">{mission.title}</CardTitle>
         <p className="text-gray-300 mb-4 line-clamp-2">{mission.description}</p>
+        <p className="text-sm text-gray-400 mb-3">Mission created by: {mission.creator?.name || "Unknown"}</p>
+
         <div className="flex items-center justify-between">
           <div className="flex items-center text-gray-300">
             <Calendar className="w-4 h-4 mr-1" />

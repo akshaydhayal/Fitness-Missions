@@ -1,11 +1,11 @@
 // components/MissionModal.tsx
 "use client";
 
-import { missionCount } from "@/store/userState";
+import { missionCount, userState } from "@/store/userState";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // Import the date picker CSS
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const colors = {
   background: "#1E1E1E",
@@ -28,7 +28,7 @@ export default function MissionModal({ isOpen, onClose }: MissionModalProps) {
   const [deadline, setDeadline] = useState<Date | null>(null);
   const [imageLink, setImageLink] = useState("");
   const [totalMissionCount, setTotalMissionCount] = useRecoilState(missionCount);
-
+  const userInfo=useRecoilValue(userState);
 
   const createMission = async () => {
     if (!deadline || !title || !description || !imageLink) {
@@ -43,6 +43,8 @@ export default function MissionModal({ isOpen, onClose }: MissionModalProps) {
       type: missionType,
       title,
       description,
+      //@ts-expect-error ignore
+      creator:userInfo?._id,
       deadline: formattedDeadline,
       pointsPerStep: missionType === "Walking" ? pointsPerStep : undefined,
       pointsPerHour: missionType === "Sleep" ? pointsPerHour : undefined,

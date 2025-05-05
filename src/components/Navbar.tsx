@@ -74,21 +74,25 @@ export default function Navbar({ onCreateMissionClick }: NavbarProps) {
       }
   },[publicKey])
 
+  function handleCreateMis(){
+    if (!publicKey) {
+      alert("Connect to Wallet first to create a mission!!");
+      return;
+    }
+    onCreateMissionClick();
+  }
   return (
     <nav style={{ backgroundColor: colors.background }} className="pt-1 px-4 flex justify-between items-center">
       <Link href="/" className="text-3xl font-bold">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 animate-pulse">Cudis Missions</span>
       </Link>
 
-      
-
       <div className="flex items-center">
         <button
           className="bg-purple-600 hover:bg-purple-700 text-white py-2 font-semibold  px-4 rounded transition mr-4"
-          onClick={onCreateMissionClick}
-        >
-          Create Cudis Mission
-        </button>
+          onClick={handleCreateMis}
+          // onClick={onCreateMissionClick}
+        >Create Cudis Mission</button>
         <WalletMultiButton />
       </div>
 
