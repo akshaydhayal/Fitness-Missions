@@ -1,8 +1,9 @@
 // app/api/users/register/route.js
 import dbConnect from "@/lib/dbConnect"; // Ensure you have a function to connect to your MongoDB
 import User from "@/models/userModel"; // Import the User model
+import { NextRequest } from "next/server";
 
-export async function POST(req) {
+export async function POST(req:NextRequest) {
     try{   
         await dbConnect(); // Connect to the database
         const { walletAddress, name } = await req.json();

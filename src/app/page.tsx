@@ -34,16 +34,18 @@ const HomePage = () => {
     fetchMissions();
   }, [totalMissionCount]);
 
-  const handleMissionClick = (missionId) => {
+  const handleMissionClick = (missionId:string) => {
     router.push(`/missions/${missionId}`);
   };
 
-  const getTimeRemaining = (deadline, isCompleted) => {
+  //@ts-expect-error tyes ignore
+  const getTimeRemaining = (deadline:Date, isCompleted) => {
     if (isCompleted) {
       return `Completed on ${new Date(deadline).toLocaleDateString()}`;
     }
 
     const now = new Date();
+    //@ts-expect-error tyes ignore
     const timeRemaining = new Date(deadline) - now;
     const daysRemaining = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
     const hoursRemaining = Math.floor(timeRemaining / (1000 * 60 * 60));
@@ -56,7 +58,8 @@ const HomePage = () => {
       return "Deadline passed";
     }
   };
-
+  
+  //@ts-expect-error tyes ignore
   const MissionCard = ({ mission, isCompleted }) => (
     <Card
       className="bg-gray-800 text-gray-100 hover:bg-gray-700 transition-all duration-300 cursor-pointer border-gray-700"
@@ -77,6 +80,7 @@ const HomePage = () => {
             <Calendar className="w-4 h-4 mr-1" />
             <span className="text-sm">{getTimeRemaining(mission.deadline, isCompleted)}</span>
           </div>
+          {/* @ts-expect-error tyes ignore */}
           <Badge variant={isCompleted ? "success" : "secondary"} className="bg-blue-600 text-gray-100">
             {isCompleted ? (
               <>
@@ -112,12 +116,14 @@ const HomePage = () => {
     </Card>
   );
 
+  //@ts-expect-error tyes ignore
   const renderMissionCards = (missions, isCompleted) => {
     if (isLoading) {
       return Array(3)
-        .fill(0)
-        .map((_, index) => <SkeletonCard key={index} />);
+      .fill(0)
+      .map((_, index) => <SkeletonCard key={index} />);
     }
+    //@ts-expect-error tyes ignore
     return missions.map((mission) => <MissionCard key={mission._id} mission={mission} isCompleted={isCompleted} />);
   };
 

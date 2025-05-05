@@ -7,10 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Progress } from "@/components/ui/progress";
+// import { Progress } from "@/components/ui/progress";
 import { Trophy, Clock, Users, Award } from "lucide-react";
 
-const CustomProgress = ({ value, max }) => {
+const CustomProgress = ({ value, max }:{value:number,max:number}) => {
   const percentage = (value / max) * 100;
   return (
     <div className="w-full bg-red-500 rounded-full h-[7px] dark:bg-red-700">
@@ -19,9 +19,13 @@ const CustomProgress = ({ value, max }) => {
   );
 };
 
+
 export default function MissionDetails({ params }: { params: { id: string } }) {
   const { publicKey, connected } = useWallet();
-  const [mission, setMission] = useState(null);
+  const [mission, setMission] = useState<null|{
+    title:string,type:string,description:string,image:string,pointsPerStep:number,
+    pointsPerHour:number, deadline:Date
+  }>(null);
   const [isJoining, setIsJoining] = useState(false);
   const [joinError, setJoinError] = useState("");
   const [hasJoined, setHasJoined] = useState(false);
@@ -55,17 +59,18 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
   // Check if user has already joined the mission
   useEffect(() => {
     if (mission && userInfo) {
+      //@ts-expect-error types ignore
       const alreadyJoined = mission.participants.some((participant) => participant?.user._id === userInfo._id);
       setHasJoined(alreadyJoined);
     }
   }, [mission, userInfo, publicKey]);
-
+  
   // Countdown Timer
   useEffect(() => {
     if (!mission) return;
-
+    
     const deadline = new Date(mission.deadline).getTime();
-
+    
     const updateTimer = () => {
       const now = new Date().getTime();
       const distance = deadline - now;
@@ -74,12 +79,12 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
         setTimeLeft("Mission Ended");
         return;
       }
-
+      
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
+      
       const formattedDays = days.toString().padStart(2, "0");
       const formattedHours = hours.toString().padStart(2, "0");
       const formattedMinutes = minutes.toString().padStart(2, "0");
@@ -98,17 +103,20 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
     if (!mission) return false;
     return new Date() > new Date(mission.deadline);
   }, [mission]);
-
+  
   const winners = useMemo(() => {
     if (!mission || !isMissionOver) return [];
+    //@ts-expect-error types ignore
     const participantPoints = mission.participants.map((p) => ({
       ...p,
       totalPoints: p.records.points,
     }));
+    //@ts-expect-error types ignore
     const maxPoints = Math.max(...participantPoints.map((p) => p.totalPoints));
+    //@ts-expect-error types ignore
     return participantPoints.filter((p) => p.totalPoints === maxPoints);
   }, [mission, isMissionOver]);
-
+  
   const handleJoinMission = async () => {
     if (isMissionOver) {
       alert("Mission is already over!");
@@ -118,7 +126,7 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
       alert("Please connect your wallet to join the mission.");
       return;
     }
-
+    
     setIsJoining(true);
     setJoinError("");
 
@@ -132,26 +140,26 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
           walletAddress: publicKey.toString(),
         }),
       });
-
+      
       const result = await response.json();
-
+      
       if (response.ok) {
         alert("You have successfully joined the mission!");
-        setMission((prev) => ({
-          ...prev,
-          participants: [...prev.participants, result.participant],
+        //@ts-expect-error types ignore
+        setMission((prev) => ({...prev, participants: [...prev.participants, result.participant],
         }));
         setHasJoined(true);
       } else {
         setJoinError(result.error || "Failed to join the mission.");
       }
     } catch (err) {
-      setJoinError("An error occurred while joining the mission.");
+      setJoinError("An error occurred while joining the mission.: ");
+      console.log(err);
     } finally {
       setIsJoining(false);
     }
   };
-
+  
   const handleRecordSubmission = async () => {
     setSubmissionError("");
     setIsSubmitting(true);
@@ -162,9 +170,8 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: userInfo._id,
-          steps: mission.type === "Walking" ? dailySteps : undefined,
-          hoursSlept: mission.type === "Sleep" ? dailySleep : undefined,
+          //@ts-expect-error types
+          userId: userInfo._id, steps: mission?.type === "Walking" ? dailySteps : undefined, hoursSlept: mission?.type === "Sleep" ? dailySleep : undefined,
         }),
       });
 
@@ -180,6 +187,7 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
       }
     } catch (err) {
       setSubmissionError("An error occurred while submitting the record.");
+      console.log(err);
     } finally {
       setIsSubmitting(false);
     }
@@ -235,12 +243,12 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
                   </div>
                   {mission.type === "Walking" && (
                     <div>
-                      <span className="font-semibold">Points per 1000 Steps:</span> {mission.pointsPerStep}
+                      <span className="font-semibold">Points per 1000 Steps(on Cudis Ring):</span> {mission.pointsPerStep}
                     </div>
                   )}
                   {mission.type === "Sleep" && (
                     <div>
-                      <span className="font-semibold">Points per hour Sleep:</span> {mission.pointsPerHour}
+                      <span className="font-semibold">Points p/h Sleep(upto 8 hours),then -10% p/h :</span> {mission.pointsPerHour}
                     </div>
                   )}
                 </div>
@@ -268,7 +276,7 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {mission.type === "Walking" && (
                       <div>
-                        <label className="block mb-2 text-gray-300">Today's Steps (Check on Cudis Ring)</label>
+                        <label className="block mb-2 text-gray-300">Today&#39;s Steps (Check on Cudis Ring)</label>
                         <Input
                           type="number"
                           value={dailySteps}
@@ -312,12 +320,12 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block mb-2 text-gray-300">Winner's Name</label>
-                      <p className="p-2 bg-gray-700 text-gray-300 rounded">{winners[0].user.name}</p>
+                      <label className="block mb-2 text-gray-300">Winner&#39;s Name</label>
+                      <p className="p-2 bg-gray-700 text-gray-300 rounded">{winners[0]?.user?.name}</p>
                     </div>
                     <div>
-                      <label className="block mb-2 text-gray-300">Winner's Points</label>
-                      <p className="p-2 bg-gray-700 text-gray-300 rounded">{winners[0].records.points}</p>
+                      <label className="block mb-2 text-gray-300">Winner&#39;s Points</label>
+                      <p className="p-2 bg-gray-700 text-gray-300 rounded">{winners[0]?.records?.points}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -333,20 +341,17 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
                 </CardTitle>
               </CardHeader>
               <CardContent>
+                {/* @ts-expect-error types ignore */}
                 {mission.participants && mission.participants.length > 0 ? (
                   <ul className="space-y-4">
-                    {mission.participants
-                      .sort((a, b) => b.records.points - a.records.points)
-                      .map((participant, idx) => (
-                        <li key={participant?._id} className="flex items-center text-gray-300">
+                    {/* @ts-expect-error types ignore */}
+                    {mission.participants.sort((a, b) => b.records.points - a.records.points).map((participant, idx) => (
+                      <li key={participant?._id} className="flex items-center text-gray-300">
                           <span className="mr-2 font-bold">{idx + 1}.</span>
                           <div className="flex-grow">
                             <p className="font-semibold">{participant?.user?.name}</p>
-                            {/* <Progress
-                              value={(participant?.records?.points / Math.max(...mission.participants.map((p) => p.records.points))) * 100}
-                              className="h-2 bg-green-500"
-                            //   className="h-2 bg-gray-700"
-                            /> */}
+                            
+                          {/* @ts-expect-error types ignore */}
                             <CustomProgress value={participant?.records.points} max={Math.max(...mission.participants.map((p) => p.records.points))} />
                           </div>
                           <span className="ml-2 font-semibold">{participant?.records.points}</span>

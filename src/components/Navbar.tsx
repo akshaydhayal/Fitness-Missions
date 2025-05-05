@@ -22,7 +22,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onCreateMissionClick }: NavbarProps) {
-  const { publicKey, connect } = useWallet();
+  const { publicKey } = useWallet();
   const [errorMessage, setErrorMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");

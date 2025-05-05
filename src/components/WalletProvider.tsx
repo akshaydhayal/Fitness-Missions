@@ -5,7 +5,7 @@ import { WalletProvider } from '@solana/wallet-adapter-react';
 import { clusterApiUrl } from '@solana/web3.js';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 
-const WalletConnectProvider = ({children}) => {
+const WalletConnectProvider = ({children}:{children:React.ReactNode}) => {
   const endpoint=clusterApiUrl("devnet");
   return (
         <ConnectionProvider endpoint={endpoint}>

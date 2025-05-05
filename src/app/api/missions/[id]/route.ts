@@ -24,14 +24,14 @@ export async function GET(request: Request, { params }: { params: { id: string }
     return NextResponse.json({ mission });
   } catch (err) {
     console.error("error in get mission : ", err);
-    return NextResponse.json({ error: "Server error", details: err.message }, { status: 500 });
+    return NextResponse.json({ error: "Server error", details: err }, { status: 500 });
   }
 }
 
 
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
-  const { userId, steps, hoursSlept } = await request.json();
+  const { userId } = await request.json();
 
   await connectMongo();
 
@@ -66,7 +66,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   try {
     // Parse request data (userId)
-    const { userId,walletAddress } = await request.json();
+    const { walletAddress } = await request.json();
 
     // Connect to MongoDB
     await connectMongo();
@@ -85,6 +85,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 
     // Check if user has already joined the mission
+    //@ts-expect-error ignote type
     const isUserAlreadyParticipant = mission.participants.some((p) => p.user.equals(user._id));
     if (isUserAlreadyParticipant) {
       return NextResponse.json({ error: "User already joined the mission" }, { status: 400 });
@@ -114,6 +115,6 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     return NextResponse.json({ mission, user });
   } catch (err) {
     console.error("Error in joining mission:", err);
-    return NextResponse.json({ error: "Server error", details: err.message }, { status: 500 });
+    return NextResponse.json({ error: "Server error", details: err }, { status: 500 });
   }
 }
