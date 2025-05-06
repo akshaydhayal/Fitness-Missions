@@ -25,7 +25,7 @@ export default function Navbar({ onCreateMissionClick }: NavbarProps) {
   const { publicKey } = useWallet();
   const [errorMessage, setErrorMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
+  // const [walletAddress, setWalletAddress] = useState("");
   const setUser=useSetRecoilState(userState);
 
   async function checkUserExists(walletAddress: string) {
@@ -54,7 +54,8 @@ export default function Navbar({ onCreateMissionClick }: NavbarProps) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ walletAddress, name }),
+      // body: JSON.stringify({ walletAddress, name }),
+      body: JSON.stringify({ walletAddress:publicKey?.toString(), name }),
     });
 
     const registerJsonResponse = await registerResponse.json();
@@ -67,12 +68,15 @@ export default function Navbar({ onCreateMissionClick }: NavbarProps) {
 
   // Automatically check if user exists when publicKey changes
   useEffect(()=>{
-      if (publicKey && !walletAddress) {
+      // if (publicKey && !walletAddress) {
+      if (publicKey) {
         const address = publicKey.toString();
-        setWalletAddress(address);
+        // setWalletAddress(address);
         checkUserExists(address);
       }
   },[publicKey])
+
+  console.log("publicKey: ",publicKey?.toBase58());
 
   function handleCreateMis(){
     if (!publicKey) {

@@ -30,6 +30,8 @@ export default function MissionModal({ isOpen, onClose }: MissionModalProps) {
   const [totalMissionCount, setTotalMissionCount] = useRecoilState(missionCount);
   const userInfo=useRecoilValue(userState);
 
+  console.log("userInfo in missionModel",userInfo);
+
   const createMission = async () => {
     if (!deadline || !title || !description || !imageLink) {
       alert("Please fill in all fields.");
