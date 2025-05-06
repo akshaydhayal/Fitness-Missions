@@ -358,7 +358,6 @@ export default function MissionDetails({ params }: { params: { id: string } }) {
                             <p className="font-semibold">{participant?.user?.name}</p>
 
                             {/* @ts-expect-error types ignore */}
-                            {/* <CustomProgress value={participant?.records.points} max={Math.max(...mission.participants.map((p) => p?.records?.points))} /> */}
                             <CustomProgress value={participant?.records.points} max={Math.max(...mission.participants.map((p) => p?.records?.points))} />
                           </div>
                           <span className="ml-2 font-semibold">{participant?.records.points}</span>
