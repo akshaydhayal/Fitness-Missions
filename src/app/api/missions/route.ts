@@ -17,7 +17,6 @@ export async function POST(request: Request) {
     deadline,
     pointsPerStep,
     pointsPerHour,
-    // participants: [],
     participants: [{
       user: creator,
       records: { date: new Date("1900-01-01T00:00:00Z"), points: 0 },

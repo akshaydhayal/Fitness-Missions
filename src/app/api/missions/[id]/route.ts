@@ -1,21 +1,13 @@
 import { NextResponse } from "next/server";
 import connectMongo from "@/lib/dbConnect";
 import Mission from "@/models/missionModel";
-import User from "@/models/userModel"; // Import the User model
+import User from "@/models/userModel"; 
 
+//get mission endpoint
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
     await connectMongo(); // Ensure the DB connection is established
 
-    // Find the mission by its ID and populate the participants.user field
-    // const mission = await Mission.findById(params.id).populate("participants.user");
-    // const mission = await Mission.findById(params.id);
-
-    //  const mission = await Mission.findById(params.id).populate({
-    //    path: "participants.user",
-    //    model: User,
-    //    select: "name walletAddress points", // Select the fields you want to include
-    //  });
     const mission = await Mission.findById(params.id)
       .populate({
         path: "participants.user",
@@ -41,32 +33,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
 
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
-  const { userId } = await request.json();
-  await connectMongo();
-
-  const mission = await Mission.findById(params.id);
-  if (!mission) {
-    return NextResponse.json({ error: "Mission not found" });
-  }
-
-//   const points =
-//     mission.type === "Walking"
-//       ? (steps / 1000) * mission.pointsPerStep
-//       : hoursSlept === 8
-//       ? mission.pointsPerHour
-//       : (Math.abs(8 - hoursSlept) * mission.pointsPerHour) / 2;
-  mission.participants.push({
-    user: userId,
-    // records: { date: new Date("1900-01-01T00:00:00Z"), steps, hoursSlept, points },
-    records: { date: new Date("1900-01-01T00:00:00Z"), points:0 },
-  });
-  await mission.save();
-
-  return NextResponse.json({ mission });
-}
-
-// export async function POST(request: Request, { params }: { params: { id: string } }) {
+//join mission endpoint
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   try {
     const { walletAddress } = await request.json();

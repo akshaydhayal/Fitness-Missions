@@ -3,6 +3,7 @@ import connectMongo from "@/lib/dbConnect";
 import Mission from "@/models/missionModel";
 import User from "@/models/userModel"; // Import the User model
 
+//enter mission record endpoint
 export async function POST(request: Request, { params }: { params: { id: string } }) {
   const { userId, steps, hoursSlept } = await request.json();
 
