@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cudis Mission Project
 
-## Getting Started
+Live Project Link: [https://cudis-missions.vercel.app/](https://cudis-missions.vercel.app/)
 
-First, run the development server:
+## Description
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The **Cudis Mission Project** is a wellness-focused application that encourages users to participate in fitness missions, track their daily health activities, and compete with others on leaderboards. The platform integrates data from the Cudis Wellness Ring to provide users with accurate tracking of their physical activities, such as steps walked and hours slept.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Mission Management**: Users can create and join fitness-related missions (e.g., walking, sleep).
+- **Progress Tracking**: Users can track their daily progress on active missions by recording steps or sleep hours.
+- **Leaderboards**: Participants can compete with others and view rankings based on points scored in missions.
+- **Real-time Data**: Dynamic updates for mission progress and leaderboard standings.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Website Demo
 
-## Learn More
+![Mission Dashboard](https://github.com/akshaydhayal/Cudis-Missions/blob/main/cudis-missions-vercel-app.png)
 
-To learn more about Next.js, take a look at the following resources:
+*Figure 1: Overview of active and completed missions.*
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![Mission Details](https://github.com/akshaydhayal/Cudis-Missions/blob/main/cudis-missions-vercel-app-missions-6706b022f9aaf67317f8c07e.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+*Figure 2: Detailed view of a specific mission with leaderboard.*
 
-## Deploy on Vercel
+![Mission Details](https://github.com/akshaydhayal/Cudis-Missions/blob/main/3.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+*Figure 3: Mission Create Page.*
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Video Demo:
+
+https://www.loom.com/share/9e745d7ea6534f1fa29a319fdf1c6b8a?sid=b88ea8fa-fb7f-405e-92d9-7116a4e0c332
+
+
+## Technologies Used
+
+- **Frontend**: Next.js, React, Recoil, Tailwind CSS, Lucide Icons
+- **Backend**: Next.js
+- **Database**: MongoDB (for storing user and mission data)
+
+## Endpoints
+
+- **Fetch All Missions**: `GET /api/missions`
+- **View Specific Mission**: `GET /api/missions/:id`
+- **Join a Mission**: `PUT /api/missions/:id`
+- **Submit Mission Records**: `POST /api/missions/records/:id`
+- **Fetch Leaderboard**: `GET /api/leaderboard`
+
+## MongoDB Collections
+
+- **MissionList**
+  - Fields: `title`, `description`, `type`, `pointsPerStep`, `deadline`, `creator`, `participants`
+- **UserList**
+  - Fields: `name`, `email`, `walletAddress`, `pointsScored`, `missionsJoined`, `avatar`
+
+## Setup Instructions
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/cudis-mission-project.git
+   cd cudis-mission-project
