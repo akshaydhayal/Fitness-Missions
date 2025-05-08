@@ -11,6 +11,8 @@ The **Cudis Mission Project** is a wellness-focused application that encourages 
 - **Mission Management**: Users can create and join fitness-related missions (e.g., walking, sleep).
 - **Progress Tracking**: Users can track their daily progress on active missions by recording steps or sleep hours.
 - **Leaderboards**: Participants can compete with others and view rankings based on points scored in missions.
+- **Mission Feeds**: Participants can write posts about the mission related and ohter users can can see and react to it incerasing community engagements.
+- **Email invites**: Participants can invite their friends to the mission through email notifications.
 - **Real-time Data**: Dynamic updates for mission progress and leaderboard standings.
 
 ## Website Demo
@@ -19,13 +21,18 @@ The **Cudis Mission Project** is a wellness-focused application that encourages 
 
 *Figure 1: Overview of active and completed missions.*
 
-![Mission Details](https://github.com/akshaydhayal/Cudis-Missions/blob/main/cudis-missions-vercel-app-missions-6706b022f9aaf67317f8c07e.png)
 
-*Figure 2: Detailed view of a specific mission with leaderboard.*
+![Mission Details](https://github.com/akshaydhayal/Cudis-Missions/blob/main/cudis-missions-vercel-app-missions-6706afc6f9aaf67317f8c075.png)
+
+*Figure 3: Detailed view of a specific mission with leaderboard and email invitations notifications*
+
+
+![Mission Details](https://github.com/akshaydhayal/Cudis-Missions/blob/main/cudis-missions-vercel-app-missions-6706afc6f9aaf67317f8c075%20(1).png)
+*Figure 2: Missions Feeds Sections*
 
 ![Mission Details](https://github.com/akshaydhayal/Cudis-Missions/blob/main/3.png)
+*Figure 2:  Mission Create Page.*
 
-*Figure 3: Mission Create Page.*
 
 
 ## Video Demo:
