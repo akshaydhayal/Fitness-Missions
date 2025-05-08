@@ -53,11 +53,13 @@ https://www.loom.com/share/9e745d7ea6534f1fa29a319fdf1c6b8a?sid=b88ea8fa-fb7f-40
 - **Join a Mission**: `PUT /api/missions/:id`
 - **Submit Mission Records**: `POST /api/missions/records/:id`
 - **Fetch Leaderboard**: `GET /api/leaderboard`
+- **Post a Mission Post**: `POST /api/missions/posts/:id`
+- **Send a Email Invitation**: `POST /api/missions/emails`
 
 ## MongoDB Collections
 
 - **MissionList**
-  - Fields: `title`, `description`, `type`, `pointsPerStep`, `deadline`, `creator`, `participants`
+  - Fields: `title`, `description`, `type`, `pointsPerStep`, `deadline`, `creator`, `participants`,`posts`
 - **UserList**
   - Fields: `name`, `email`, `walletAddress`, `pointsScored`, `missionsJoined`, `avatar`
 
