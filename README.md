@@ -1,4 +1,4 @@
-# Wellness Fitness Missions
+# Social Fitness Challenges with Real-Time Tracking
 
 Live Project Link: [https://cudis-missions.vercel.app/](https://cudis-missions.vercel.app/)
 
