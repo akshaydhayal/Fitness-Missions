@@ -37,8 +37,7 @@ The **Cudis Mission Project** is a wellness-focused application that encourages 
 
 ## Video Demo:
 
-https://www.loom.com/share/9e745d7ea6534f1fa29a319fdf1c6b8a?sid=b88ea8fa-fb7f-405e-92d9-7116a4e0c332
-
+https://www.loom.com/share/f6838bc608cc47b2bfd22b410d5f4b4d?sid=c0e7a9ad-0a01-4207-825b-5ca72a0d44b2
 
 ## Technologies Used
 
