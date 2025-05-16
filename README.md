@@ -1,4 +1,4 @@
-# Cudis Mission Project
+# Wellness Fitness Missions
 
 Live Project Link: [https://cudis-missions.vercel.app/](https://cudis-missions.vercel.app/)
 
